@@ -91,7 +91,7 @@ if [ "$1" = "0" ]; then
 			/etc/httpd/httpd.conf.tmp
 		mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
 		if [ -f /var/lock/subsys/httpd ]; then
-		    /usr/sbin/apachectl restart 1>&2
+		    	/usr/sbin/apachectl restart 1>&2
 		fi
 	fi
 fi
