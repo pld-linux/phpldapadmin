@@ -16,6 +16,9 @@ Requires:	php-pcre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_appdir		%{_datadir}/%{name}
+%define		_confdir	%{_sysconfdir}/%{name}
+
 %description
 phpLDAPadmin is a web-based LDAP client. It provides easy,
 anywhere-accessible, multi-language administration for your LDAP
@@ -36,9 +39,6 @@ aplikacja webow±, dzia³a na wielu platformach, czyni±c serwer LDAP
 ³atwym do zarz±dzania z dowolnej lokalizacji. phpLDAPadmin jest
 doskona³± przegl±darka LDAP zarówno dla profesjonalistów jak 
 i nowicjuszy.
-
-%define         _appdir	%{_datadir}/%{name}
-%define         _confdir     	%{_sysconfdir}/%{name}
 
 %prep
 %setup -q
@@ -84,13 +84,13 @@ fi
 if [ "$1" = "0" ]; then
 	umask 027
 	if [ -d %{_sysconfdir}/httpd/httpd.conf ]; then
-	    rm -f %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
+		rm -f %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
 	else
 		grep -v "^Include.*%{name}.conf" %{_sysconfdir}/httpd/httpd.conf > \
 			%{_sysconfdir}/httpd/httpd.conf.tmp
 		mv -f %{_sysconfdir}/httpd/httpd.conf.tmp %{_sysconfdir}/httpd/httpd.conf
 		if [ -f /var/lock/subsys/httpd ]; then
-		    	%{_sbindir}/apachectl restart 1>&2
+			%{_sbindir}/apachectl restart 1>&2
 		fi
 	fi
 fi
