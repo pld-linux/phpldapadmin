@@ -2,13 +2,12 @@ Summary:	phpldapadmin - a web-based LDAP client
 Summary(pl):	phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
 Version:	0.9.4b
-Release:	0.2
+Release:	0.3
 Epoch:		0
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
 # Source0-md5:	0aa6021da066c637e56354980dccddbe
-Source1:	%{name}.conf
 URL:		http://phpldapadmin.sourceforge.net/
 Requires:	apache
 Requires:	php
@@ -16,9 +15,6 @@ Requires:	php-ldap
 Requires:	php-pcre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define         _phpldapadmindir	%{_datadir}/%{name}
-%define         _sysconfdir     	/etc/%{name}
 
 %description
 phpLDAPadmin is a web-based LDAP client. It provides easy,
@@ -41,6 +37,9 @@ aplikacja webow±, dzia³a na wielu platformach, czyni±c serwer LDAP
 doskona³± przegl±darka LDAP zarówno dla profesjonalistów jak 
 i nowicjuszy.
 
+%define         _appdir	%{_datadir}/%{name}
+%define         _confdir     	%{_sysconfdir}/%{name}
+
 %prep
 %setup -q
 
@@ -48,50 +47,50 @@ i nowicjuszy.
 rm -rf $RPM_BUILD_ROOT
 
 install -d \
-	$RPM_BUILD_ROOT{%{_sysconfdir},/etc/httpd} \
-	$RPM_BUILD_ROOT%{_phpldapadmindir}/{doc,images,lang/recoded,templates/{creation,modification}}
+	$RPM_BUILD_ROOT{%{_confdir},%{_sysconfdir}/httpd} \
+	$RPM_BUILD_ROOT%{_appdir}/{doc,images,lang/recoded,templates/{creation,modification}}
 
-install	%{SOURCE1}			$RPM_BUILD_ROOT/etc/httpd
+echo "Alias /ldapadmin %{_appdir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
 install	doc/*				.
-install	doc/*				$RPM_BUILD_ROOT%{_phpldapadmindir}/doc
-install	images/*.{png,jpg}		$RPM_BUILD_ROOT%{_phpldapadmindir}/images
-install	lang/*.php			$RPM_BUILD_ROOT%{_phpldapadmindir}/lang
-install	lang/recoded/*.php		$RPM_BUILD_ROOT%{_phpldapadmindir}/lang/recoded
-install	templates/*.php			$RPM_BUILD_ROOT%{_phpldapadmindir}/templates
-install	templates/creation/*.php	$RPM_BUILD_ROOT%{_phpldapadmindir}/templates/creation
-install	templates/modification/*.php	$RPM_BUILD_ROOT%{_phpldapadmindir}/templates/modification
-install	*.{css,js,php}	 		$RPM_BUILD_ROOT%{_phpldapadmindir}
-install	{ldap_error_codes.txt,VERSION}	$RPM_BUILD_ROOT%{_phpldapadmindir}
-install	config.php.example		$RPM_BUILD_ROOT%{_sysconfdir}/config.php
+install	doc/*				$RPM_BUILD_ROOT%{_appdir}/doc
+install	images/*.{png,jpg}		$RPM_BUILD_ROOT%{_appdir}/images
+install	lang/*.php			$RPM_BUILD_ROOT%{_appdir}/lang
+install	lang/recoded/*.php		$RPM_BUILD_ROOT%{_appdir}/lang/recoded
+install	templates/*.php			$RPM_BUILD_ROOT%{_appdir}/templates
+install	templates/creation/*.php	$RPM_BUILD_ROOT%{_appdir}/templates/creation
+install	templates/modification/*.php	$RPM_BUILD_ROOT%{_appdir}/templates/modification
+install	*.{css,js,php}	 		$RPM_BUILD_ROOT%{_appdir}
+install	{ldap_error_codes.txt,VERSION}	$RPM_BUILD_ROOT%{_appdir}
+install	config.php.example		$RPM_BUILD_ROOT%{_confdir}/config.php
 
-ln -sf	%{_sysconfdir}/config.php 	$RPM_BUILD_ROOT%{_phpldapadmindir}/config.php
+ln -sf	%{_confdir}/config.php 	$RPM_BUILD_ROOT%{_appdir}/config.php
 
-rm -f	$RPM_BUILD_ROOT%{_phpldapadmindir}/config.php.example
+rm -f	$RPM_BUILD_ROOT%{_appdir}/config.php.example
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*phpldapadmin.conf" /etc/httpd/httpd.conf; then
-	echo "Include /etc/httpd/phpldapadmin.conf" >> /etc/httpd/httpd.conf
-elif [ -d /etc/httpd/httpd.conf ]; then
-	 ln -sf /etc/httpd/%{name}.conf /etc/httpd/httpd.conf/99_%{name}.conf
+if [ -f %{_sysconfdir}/httpd/httpd.conf ] && ! grep -q "^Include.*%{name}.conf" %{_sysconfdir}/httpd/httpd.conf; then
+	echo "Include %{_sysconfdir}/httpd/%{name}.conf" >> %{_sysconfdir}/httpd/httpd.conf
+elif [ -d %{_sysconfdir}/httpd/httpd.conf ]; then
+	 ln -sf %{_sysconfdir}/httpd/%{name}.conf %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
 fi
 if [ -f /var/lock/subsys/httpd ]; then
-	/usr/sbin/apachectl restart 1>&2
+	%{_sbindir}/apachectl restart 1>&2
 fi
 
 %preun
 if [ "$1" = "0" ]; then
 	umask 027
-	if [ -d /etc/httpd/httpd.conf ]; then
-	    rm -f /etc/httpd/httpd.conf/99_%{name}.conf
+	if [ -d %{_sysconfdir}/httpd/httpd.conf ]; then
+	    rm -f %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
 	else
-		grep -v "^Include.*phpldapadmin.conf" /etc/httpd/httpd.conf > \
-			/etc/httpd/httpd.conf.tmp
-		mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
+		grep -v "^Include.*%{name}.conf" %{_sysconfdir}/httpd/httpd.conf > \
+			%{_sysconfdir}/httpd/httpd.conf.tmp
+		mv -f %{_sysconfdir}/httpd/httpd.conf.tmp %{_sysconfdir}/httpd/httpd.conf
 		if [ -f /var/lock/subsys/httpd ]; then
-		    	/usr/sbin/apachectl restart 1>&2
+		    	%{_sbindir}/apachectl restart 1>&2
 		fi
 	fi
 fi
@@ -99,7 +98,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc CREDITS ChangeLog pla-test-i18n.ldif ROADMAP README-translation.txt
-%dir %{_sysconfdir}
-%attr(640,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/*
-%config(noreplace) %verify(not size mtime md5) /etc/httpd/%{name}.conf
-%{_phpldapadmindir}
+%dir %{_confdir}
+%attr(640,root,http) %config(noreplace) %verify(not size mtime md5) %{_confdir}/*
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd/%{name}.conf
+%{_appdir}
