@@ -2,7 +2,7 @@ Summary:	phpldapadmin - a web-based LDAP client
 Summary(pl):	phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
 Version:	0.9.4b
-Release:	0.1
+Release:	0.2
 Epoch:		0
 License:	GPL
 Group:		Applications/Networking
@@ -75,7 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*phpldapadmin.conf" /etc/httpd/httpd.conf; then
 	echo "Include /etc/httpd/phpldapadmin.conf" >> /etc/httpd/httpd.conf
 elif [ -d /etc/httpd/httpd.conf ]; then
-	mv -f /etc/httpd/%{name}.conf /etc/httpd/httpd.conf/99_%{name}.conf
+	 ln -sf /etc/httpd/%{name}.conf /etc/httpd/httpd.conf/99_%{name}.conf
 fi
 if [ -f /var/lock/subsys/httpd ]; then
 	/usr/sbin/apachectl restart 1>&2
