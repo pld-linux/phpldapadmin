@@ -51,20 +51,23 @@ rm -rf $RPM_BUILD_ROOT
 install -d \
 	$RPM_BUILD_ROOT%{_datadir}/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT{%{_sysconfdir},/etc/httpd} \
-	$RPM_BUILD_ROOT%{_phpldapadmindir}/{images,lang/recoded,templates/{creation,modification}}
+	$RPM_BUILD_ROOT%{_phpldapadmindir}/{doc,images,lang/recoded,templates/{creation,modification}}
 
 install	%{SOURCE1}			$RPM_BUILD_ROOT/etc/httpd
-install	doc/*				. 
-install	images/*.png			$RPM_BUILD_ROOT%{_phpldapadmindir}/images
+install	doc/*				.
+install	doc/*				$RPM_BUILD_ROOT%{_phpldapadmindir}/doc
+install	images/*.{png,jpg}		$RPM_BUILD_ROOT%{_phpldapadmindir}/images
 install	lang/*.php			$RPM_BUILD_ROOT%{_phpldapadmindir}/lang
-install	lang/*.php			$RPM_BUILD_ROOT%{_phpldapadmindir}/lang/recoded
+install	lang/recoded/*.php		$RPM_BUILD_ROOT%{_phpldapadmindir}/lang/recoded
 install	templates/*.php			$RPM_BUILD_ROOT%{_phpldapadmindir}/templates
 install	templates/creation/*.php	$RPM_BUILD_ROOT%{_phpldapadmindir}/templates/creation
 install	templates/modification/*.php	$RPM_BUILD_ROOT%{_phpldapadmindir}/templates/modification
 install	*.{css,js,php}	 		$RPM_BUILD_ROOT%{_phpldapadmindir}
-install	ldap_error_codes.txt 		$RPM_BUILD_ROOT%{_phpldapadmindir}
+install	{ldap_error_codes.txt,VERSION}	$RPM_BUILD_ROOT%{_phpldapadmindir}
 install	config.php.example		$RPM_BUILD_ROOT%{_sysconfdir}/config.php
+
 ln -sf	%{_sysconfdir}/config.php 	$RPM_BUILD_ROOT%{_phpldapadmindir}/config.php
+
 rm -f	$RPM_BUILD_ROOT%{_phpldapadmindir}/config.php.example
 
 %clean
