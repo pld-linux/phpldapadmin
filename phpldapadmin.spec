@@ -49,7 +49,6 @@ i nowicjuszy.
 rm -rf $RPM_BUILD_ROOT
 # create directories if necessary
 install -d \
-	$RPM_BUILD_ROOT%{_datadir}/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT{%{_sysconfdir},/etc/httpd} \
 	$RPM_BUILD_ROOT%{_phpldapadmindir}/{doc,images,lang/recoded,templates/{creation,modification}}
 
