@@ -6,14 +6,14 @@ Release:	0.1
 Epoch:		0
 License:	GPL
 Group:		Applications/Networking
-Source0:	http://dl.sourceforge.net/sourceforge/phpldapadmin/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
 # Source0-md5:	0aa6021da066c637e56354980dccddbe
 Source1:	%{name}.conf
 URL:		http://phpldapadmin.sourceforge.net/
+Requires:	apache
 Requires:	php
 Requires:	php-ldap
 Requires:	php-pcre
-Requires:	apache
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
