@@ -10,7 +10,7 @@ Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
 # Source0-md5:	0aa6021da066c637e56354980dccddbe
 URL:		http://phpldapadmin.sourceforge.net/
 Requires:	apache
-Requires:	php
+Requires:	php < 5.0.0
 Requires:	php-ldap
 Requires:	php-pcre
 BuildArch:	noarch
