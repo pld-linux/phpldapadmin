@@ -32,22 +32,21 @@ novice alike.
 
 %description -l pl
 phpLDAPadmin jest opartym o WWW klientem LDAP. Dostarcza ³atwego,
-ogólnie dostepnego, wielojezykowego interfejsu administracyjnego do
-serwera LDAP. Jego hierarchiczna przegladarka struktur drzewiastych i
-zaawansowane mo¿liwosci wyszukiwania czynia go intuicyjnym dla
+ogólnie dostêpnego, wielojêzykowego interfejsu administracyjnego do
+serwera LDAP. Jego hierarchiczna przegl±darka struktur drzewiastych
+i zaawansowane mo¿liwosci wyszukiwania czyni± go intuicyjnym dla
 przegl±dania i administrowania katalogami LDAP. Poniewa¿ jest
-aplikacja webowa, dzia³a na wielu platformach, czyni±c serwer LDAP
+aplikacja webow±, dzia³a na wielu platformach, czyni±c serwer LDAP
 ³atwym do zarz±dzania z dowolnej lokalizacji. phpLDAPadmin jest
 doskona³± przegl±darka LDAP zarówno dla profesjonalistów jak 
 i nowicjuszy.
 
 %prep
 %setup -q
-#%%patch0 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
-# create directories if necessary
+
 install -d \
 	$RPM_BUILD_ROOT{%{_sysconfdir},/etc/httpd} \
 	$RPM_BUILD_ROOT%{_phpldapadmindir}/{doc,images,lang/recoded,templates/{creation,modification}}
