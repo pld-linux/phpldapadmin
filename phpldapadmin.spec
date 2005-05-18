@@ -1,13 +1,13 @@
 Summary:	phpldapadmin - a web-based LDAP client
 Summary(pl):	phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
-Version:	0.9.6
+Version:	0.9.6c
 Release:	0.1
 Epoch:		0
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
-# Source0-md5:	db5eb502697712ebdaeb34766b6a7760
+# Source0-md5:	8404fa6f0ad3185cc9353c94bf44ae56
 URL:		http://phpldapadmin.sourceforge.net/
 Requires:	apache
 Requires:	php-ldap
