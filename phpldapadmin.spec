@@ -9,6 +9,7 @@ Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
 # Source0-md5:	8404fa6f0ad3185cc9353c94bf44ae56
 URL:		http://phpldapadmin.sourceforge.net/
+BuildRequires:	rpmbuild(macros) >= 1.221
 Requires:	apache
 Requires:	php-ldap
 Requires:	php-pcre
@@ -69,30 +70,17 @@ rm -f	$RPM_BUILD_ROOT%{_appdir}/config.php.example
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-if [ -f %{_sysconfdir}/httpd/httpd.conf ] && ! grep -q "^Include.*%{name}.conf" %{_sysconfdir}/httpd/httpd.conf; then
-	echo "Include %{_sysconfdir}/httpd/%{name}.conf" >> %{_sysconfdir}/httpd/httpd.conf
-elif [ -d %{_sysconfdir}/httpd/httpd.conf ]; then
-	 ln -sf %{_sysconfdir}/httpd/%{name}.conf %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
-fi
-if [ -f /var/lock/subsys/httpd ]; then
-	%{_sbindir}/apachectl restart 1>&2
-fi
+%triggerin -- apache1 >= 1.3.0
+%apache_config_install -v 1 -c %{_sysconfdir}/apache-%{name}.conf
 
-%preun
-if [ "$1" = "0" ]; then
-	umask 027
-	if [ -d %{_sysconfdir}/httpd/httpd.conf ]; then
-		rm -f %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
-	else
-		grep -v "^Include.*%{name}.conf" %{_sysconfdir}/httpd/httpd.conf > \
-			%{_sysconfdir}/httpd/httpd.conf.tmp
-		mv -f %{_sysconfdir}/httpd/httpd.conf.tmp %{_sysconfdir}/httpd/httpd.conf
-		if [ -f /var/lock/subsys/httpd ]; then
-			%{_sbindir}/apachectl restart 1>&2
-		fi
-	fi
-fi
+%triggerun -- apache1 >= 1.3.0
+%apache_config_uninstall -v 1
+
+%triggerin -- apache >= 2.0.0
+%apache_config_install -v 2 -c %{_sysconfdir}/apache-%{name}.conf
+
+%triggerun -- apache >= 2.0.0
+%apache_config_uninstall -v 2
 
 %files
 %defattr(644,root,root,755)
