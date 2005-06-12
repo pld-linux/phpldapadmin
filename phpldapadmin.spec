@@ -70,10 +70,10 @@ rm -f	$RPM_BUILD_ROOT%{_appdir}/config.php.example
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%triggerin -- apache1 >= 1.3.0
+%triggerin -- apache1 >= 1.3.33-2
 %apache_config_install -v 1 -c %{_sysconfdir}/apache-%{name}.conf
 
-%triggerun -- apache1 >= 1.3.0
+%triggerun -- apache1 >= 1.3.33-2
 %apache_config_uninstall -v 1
 
 %triggerin -- apache >= 2.0.0
