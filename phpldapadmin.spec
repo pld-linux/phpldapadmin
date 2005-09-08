@@ -1,3 +1,5 @@
+# TODO
+# - security http://security.gentoo.org/glsa/glsa-200509-04.xml
 Summary:	phpldapadmin - a web-based LDAP client
 Summary(pl):	phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
