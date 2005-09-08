@@ -1,0 +1,2 @@
+- confdir enabled apache1 available only since version 1.3.33-2 (use
+  template-apache-package.spec as base reference)
