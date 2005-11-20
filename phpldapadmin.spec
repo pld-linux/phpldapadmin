@@ -12,9 +12,10 @@ Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
 # Source0-md5:	8404fa6f0ad3185cc9353c94bf44ae56
 URL:		http://phpldapadmin.sourceforge.net/
 BuildRequires:	rpmbuild(macros) >= 1.221
-Requires:	apache
+Requires:	webserver = apache
 Requires:	php-ldap
 Requires:	php-pcre
+Conflicts:	apache1 < 1.3.33-2
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
