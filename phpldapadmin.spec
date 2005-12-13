@@ -12,9 +12,9 @@ Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
 # Source0-md5:	8404fa6f0ad3185cc9353c94bf44ae56
 URL:		http://phpldapadmin.sourceforge.net/
 BuildRequires:	rpmbuild(macros) >= 1.221
-Requires:	webserver = apache
 Requires:	php-ldap
 Requires:	php-pcre
+Requires:	webserver = apache
 Conflicts:	apache1 < 1.3.33-2
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -35,13 +35,13 @@ novice alike.
 %description -l pl
 phpLDAPadmin jest opartym o WWW klientem LDAP. Dostarcza ³atwego,
 ogólnie dostêpnego, wielojêzykowego interfejsu administracyjnego do
-serwera LDAP. Jego hierarchiczna przegl±darka struktur drzewiastych
-i zaawansowane mo¿liwosci wyszukiwania czyni± go intuicyjnym dla
+serwera LDAP. Jego hierarchiczna przegl±darka struktur drzewiastych i
+zaawansowane mo¿liwosci wyszukiwania czyni± go intuicyjnym dla
 przegl±dania i administrowania katalogami LDAP. Poniewa¿ jest
 aplikacja webow±, dzia³a na wielu platformach, czyni±c serwer LDAP
 ³atwym do zarz±dzania z dowolnej lokalizacji. phpLDAPadmin jest
-doskona³± przegl±darka LDAP zarówno dla profesjonalistów jak 
-i nowicjuszy.
+doskona³± przegl±darka LDAP zarówno dla profesjonalistów jak i
+nowicjuszy.
 
 %prep
 %setup -q
@@ -89,6 +89,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CREDITS ChangeLog pla-test-i18n.ldif README-translation.txt
 %dir %{_confdir}
-%attr(640,root,http) %config(noreplace) %verify(not size mtime md5) %{_confdir}/*
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd/%{name}.conf
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_confdir}/*
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd/%{name}.conf
 %{_appdir}
