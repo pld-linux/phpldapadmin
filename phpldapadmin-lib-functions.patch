@@ -1,0 +1,11 @@
+--- phpldapadmin-0.9.8.2-orig/lib/functions.php	2006-03-13 23:13:43.000000000 +0000
++++ phpldapadmin-0.9.8.2/lib/functions.php	2006-04-05 20:42:22.367232000 +0000
+@@ -7,7 +7,7 @@
+  * @package phpLDAPadmin
+  */
+ 
+-define('HTDOCDIR',sprintf('%s/',realpath(LIBDIR.'../htdocs/')));
++define('HTDOCDIR',sprintf('%s/',realpath(LIBDIR.'')));
+ define('LANGDIR',sprintf('%s/',realpath(LIBDIR.'../locale/')));
+ define('CONFDIR',sprintf('%s/',realpath(LIBDIR.'../config')));
+ define('TMPLDIR',sprintf('%s/',realpath(LIBDIR.'../templates/')));

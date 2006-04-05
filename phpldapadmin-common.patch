@@ -1,0 +1,9 @@
+--- phpldapadmin-0.9.8.2-orig/htdocs/common.php	2005-10-17 20:35:52.000000000 +0000
++++ phpldapadmin-0.9.8.2/htdocs/common.php	2006-04-05 20:54:57.482423750 +0000
+@@ -1,5 +1,5 @@
+ <?php
+ # This is a temporary file
+-@define('LIBDIR',sprintf('%s/',realpath('../lib/')));
++@define('LIBDIR',sprintf('%s/',realpath('lib/')));
+ require LIBDIR.'common.php';
+ ?>
