@@ -1,26 +1,24 @@
-# TODO
-# - security http://security.gentoo.org/glsa/glsa-200509-04.xml
 Summary:	phpldapadmin - a web-based LDAP client
 Summary(pl):	phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
 Version:	0.9.6c
-Release:	0.1
-Epoch:		0
+Release:	0.3
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
 # Source0-md5:	8404fa6f0ad3185cc9353c94bf44ae56
 URL:		http://phpldapadmin.sourceforge.net/
-BuildRequires:	rpmbuild(macros) >= 1.221
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires:	php-ldap
 Requires:	php-pcre
-Requires:	webserver = apache
-Conflicts:	apache1 < 1.3.33-2
+Requires:	webapps
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_appdir		%{_datadir}/%{name}
-%define		_confdir	%{_sysconfdir}/%{name}
+%define		_webapps	/etc/webapps
+%define		_webapp		%{name}
+%define		_sysconfdir	%{_webapps}/%{_webapp}
+%define		_appdir		%{_datadir}/%{_webapp}
 
 %description
 phpLDAPadmin is a web-based LDAP client. It provides easy,
@@ -45,15 +43,17 @@ nowicjuszy.
 
 %prep
 %setup -q
+cat > apache.conf <<'EOF'
+Alias /ldapadmin %{_appdir}
+<Directory %{_appdir}>
+	allow from all
+</Directory>
+EOF
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/{doc,images,lang/recoded,templates/{creation,modification}}}
 
-install -d \
-	$RPM_BUILD_ROOT{%{_confdir},%{_sysconfdir}/httpd} \
-	$RPM_BUILD_ROOT%{_appdir}/{doc,images,lang/recoded,templates/{creation,modification}}
-
-echo "Alias /ldapadmin %{_appdir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
 install	doc/*				.
 install	doc/*				$RPM_BUILD_ROOT%{_appdir}/doc
 install	images/*.{png,jpg}		$RPM_BUILD_ROOT%{_appdir}/images
@@ -64,31 +64,31 @@ install	templates/creation/*.php	$RPM_BUILD_ROOT%{_appdir}/templates/creation
 install	templates/modification/*.php	$RPM_BUILD_ROOT%{_appdir}/templates/modification
 install	*.{css,js,php}	 		$RPM_BUILD_ROOT%{_appdir}
 install	{ldap_error_codes.txt,VERSION}	$RPM_BUILD_ROOT%{_appdir}
-install	config.php.example		$RPM_BUILD_ROOT%{_confdir}/config.php
-
-ln -sf	%{_confdir}/config.php 	$RPM_BUILD_ROOT%{_appdir}/config.php
-
-rm -f	$RPM_BUILD_ROOT%{_appdir}/config.php.example
+install	config.php.example		$RPM_BUILD_ROOT%{_sysconfdir}/config.php
+install apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
+install apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
+ln -sf	%{_sysconfdir}/config.php 	$RPM_BUILD_ROOT%{_appdir}/config.php
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%triggerin -- apache1 >= 1.3.33-2
-%apache_config_install -v 1 -c %{_sysconfdir}/apache-%{name}.conf
+%triggerin -- apache1
+%webapp_register apache %{_webapp}
 
-%triggerun -- apache1 >= 1.3.33-2
-%apache_config_uninstall -v 1
+%triggerun -- apache1
+%webapp_unregister apache %{_webapp}
 
-%triggerin -- apache >= 2.0.0
-%apache_config_install -v 2 -c %{_sysconfdir}/apache-%{name}.conf
+%triggerin -- apache < 2.2.0, apache-base
+%webapp_register httpd %{_webapp}
 
-%triggerun -- apache >= 2.0.0
-%apache_config_uninstall -v 2
+%triggerun -- apache < 2.2.0, apache-base
+%webapp_unregister httpd %{_webapp}
 
 %files
 %defattr(644,root,root,755)
 %doc CREDITS ChangeLog pla-test-i18n.ldif README-translation.txt
-%dir %{_confdir}
-%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_confdir}/*
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd/%{name}.conf
+%dir %attr(750,root,http) %{_sysconfdir}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.php
 %{_appdir}
