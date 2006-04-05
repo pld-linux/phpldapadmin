@@ -68,15 +68,15 @@ cp -a locale/*				$RPM_BUILD_ROOT%{_appdir}/locale
 install	doc/*				.
 install	doc/*				$RPM_BUILD_ROOT%{_appdir}/doc
 install	htdocs/*.php	 		$RPM_BUILD_ROOT%{_appdir}
-install	htdocs/images/*.{png,jpg}		$RPM_BUILD_ROOT%{_appdir}/images
-install	htdocs/css/*.css	 		$RPM_BUILD_ROOT%{_appdir}/css
+install	htdocs/images/*.{png,jpg}	$RPM_BUILD_ROOT%{_appdir}/images
+install	htdocs/css/*.css	 	$RPM_BUILD_ROOT%{_appdir}/css
 install	lib/*.php			$RPM_BUILD_ROOT%{_appdir}/lib
-install	templates/*.xml			$RPM_BUILD_ROOT%{_appdir}/templates
+install	templates/*.{xml,dtd,php}	$RPM_BUILD_ROOT%{_appdir}/templates
 install	templates/creation/*.php	$RPM_BUILD_ROOT%{_appdir}/templates/creation
 install	VERSION				$RPM_BUILD_ROOT%{_appdir}
-install	config/config.php.example		$RPM_BUILD_ROOT%{_sysconfdir}/config.php
-install apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
-install apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
+install	config/config.php.example	$RPM_BUILD_ROOT%{_sysconfdir}/config.php
+install apache.conf			$RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
+install apache.conf			$RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 ln -sf	%{_sysconfdir}/config.php 	$RPM_BUILD_ROOT%{_appdir}/config/config.php
 
 %clean
