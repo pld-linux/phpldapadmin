@@ -1,16 +1,21 @@
 Summary:	phpldapadmin - a web-based LDAP client
 Summary(pl):	phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
-Version:	0.9.6c
-Release:	0.3
+Version:	0.9.8.2
+Release:	0.1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
-# Source0-md5:	8404fa6f0ad3185cc9353c94bf44ae56
+# Source0-md5:	a83b44d90b14983b01db53ec39053a15
+Patch0:		%{name}-index.patch
+Patch1:		%{name}-lib-functions.patch
+Patch2:		%{name}-common.patch
 URL:		http://phpldapadmin.sourceforge.net/
 BuildRequires:	rpmbuild(macros) >= 1.268
+Requires:	php-gettext
 Requires:	php-ldap
 Requires:	php-pcre
+Requires:	php-xml
 Requires:	webapps
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -43,6 +48,9 @@ nowicjuszy.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 cat > apache.conf <<'EOF'
 Alias /ldapadmin %{_appdir}
 <Directory %{_appdir}>
@@ -52,22 +60,24 @@ EOF
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/{doc,images,lang/recoded,templates/{creation,modification}}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/{css,config,doc,images,js,locale,lib,templates/creation}}
+
+cp -a htdocs/js/*				$RPM_BUILD_ROOT%{_appdir}/js
+cp -a locale/*				$RPM_BUILD_ROOT%{_appdir}/locale
 
 install	doc/*				.
 install	doc/*				$RPM_BUILD_ROOT%{_appdir}/doc
-install	images/*.{png,jpg}		$RPM_BUILD_ROOT%{_appdir}/images
-install	lang/*.php			$RPM_BUILD_ROOT%{_appdir}/lang
-install	lang/recoded/*.php		$RPM_BUILD_ROOT%{_appdir}/lang/recoded
-install	templates/*.php			$RPM_BUILD_ROOT%{_appdir}/templates
+install	htdocs/*.php	 		$RPM_BUILD_ROOT%{_appdir}
+install	htdocs/images/*.{png,jpg}		$RPM_BUILD_ROOT%{_appdir}/images
+install	htdocs/css/*.css	 		$RPM_BUILD_ROOT%{_appdir}/css
+install	lib/*.php			$RPM_BUILD_ROOT%{_appdir}/lib
+install	templates/*.xml			$RPM_BUILD_ROOT%{_appdir}/templates
 install	templates/creation/*.php	$RPM_BUILD_ROOT%{_appdir}/templates/creation
-install	templates/modification/*.php	$RPM_BUILD_ROOT%{_appdir}/templates/modification
-install	*.{css,js,php}	 		$RPM_BUILD_ROOT%{_appdir}
-install	{ldap_error_codes.txt,VERSION}	$RPM_BUILD_ROOT%{_appdir}
-install	config.php.example		$RPM_BUILD_ROOT%{_sysconfdir}/config.php
+install	VERSION				$RPM_BUILD_ROOT%{_appdir}
+install	config/config.php.example		$RPM_BUILD_ROOT%{_sysconfdir}/config.php
 install apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 install apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
-ln -sf	%{_sysconfdir}/config.php 	$RPM_BUILD_ROOT%{_appdir}/config.php
+ln -sf	%{_sysconfdir}/config.php 	$RPM_BUILD_ROOT%{_appdir}/config/config.php
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -86,7 +96,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CREDITS ChangeLog pla-test-i18n.ldif README-translation.txt
+%doc pla-test-i18n.ldif README-translation.txt
 %dir %attr(750,root,http) %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
