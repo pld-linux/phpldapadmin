@@ -1,0 +1,11 @@
+--- phpldapadmin-0.9.8.2/lib/functions.php	2006-03-14 01:13:43.000000000 +0200
++++ /home/glen/functions.php	2006-04-06 02:32:30.315769659 +0300
+@@ -9,7 +9,7 @@
+ 
+ define('HTDOCDIR',sprintf('%s/',realpath(LIBDIR.'../htdocs/')));
+ define('LANGDIR',sprintf('%s/',realpath(LIBDIR.'../locale/')));
+-define('CONFDIR',sprintf('%s/',realpath(LIBDIR.'../config')));
++define('CONFDIR','/etc/webapps/phpldapadmin/');
+ define('TMPLDIR',sprintf('%s/',realpath(LIBDIR.'../templates/')));
+ define('DOCDIR',sprintf('%s/',realpath(LIBDIR.'../doc/')));
+ define('HOOKSDIR',sprintf('%s/',realpath(LIBDIR.'../hooks/')));
