@@ -1,5 +1,5 @@
 Summary:	phpldapadmin - a web-based LDAP client
-Summary(pl):	phpldapadmin - klient WWW dla LDAP
+Summary(pl.UTF-8):   phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
 Version:	0.9.8.2
 Release:	0.6
@@ -33,15 +33,15 @@ making your LDAP server easily manageable from any location.
 phpLDAPadmin is the perfect LDAP browser for the LDAP professional and
 novice alike.
 
-%description -l pl
-phpLDAPadmin jest opartym o WWW klientem LDAP. Dostarcza ³atwego,
-ogólnie dostêpnego, wielojêzykowego interfejsu administracyjnego do
-serwera LDAP. Jego hierarchiczna przegl±darka struktur drzewiastych i
-zaawansowane mo¿liwosci wyszukiwania czyni± go intuicyjnym dla
-przegl±dania i administrowania katalogami LDAP. Poniewa¿ jest
-aplikacja webow±, dzia³a na wielu platformach, czyni±c serwer LDAP
-³atwym do zarz±dzania z dowolnej lokalizacji. phpLDAPadmin jest
-doskona³± przegl±darka LDAP zarówno dla profesjonalistów jak i
+%description -l pl.UTF-8
+phpLDAPadmin jest opartym o WWW klientem LDAP. Dostarcza Å‚atwego,
+ogÃ³lnie dostÄ™pnego, wielojÄ™zykowego interfejsu administracyjnego do
+serwera LDAP. Jego hierarchiczna przeglÄ…darka struktur drzewiastych i
+zaawansowane moÅ¼liwosci wyszukiwania czyniÄ… go intuicyjnym dla
+przeglÄ…dania i administrowania katalogami LDAP. PoniewaÅ¼ jest
+aplikacja webowÄ…, dziaÅ‚a na wielu platformach, czyniÄ…c serwer LDAP
+Å‚atwym do zarzÄ…dzania z dowolnej lokalizacji. phpLDAPadmin jest
+doskonaÅ‚Ä… przeglÄ…darka LDAP zarÃ³wno dla profesjonalistÃ³w jak i
 nowicjuszy.
 
 %prep
