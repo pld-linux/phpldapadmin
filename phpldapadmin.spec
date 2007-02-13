@@ -1,5 +1,5 @@
 Summary:	phpldapadmin - a web-based LDAP client
-Summary(pl.UTF-8):   phpldapadmin - klient WWW dla LDAP
+Summary(pl.UTF-8):	phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
 Version:	0.9.8.2
 Release:	0.6
