@@ -17,6 +17,8 @@ Requires:	php(xml)
 Requires:	webapps
 Requires:	webserver(access)
 Requires:	webserver(alias)
+Requires:	webserver(indexfile)
+Requires:	webserver(php)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
