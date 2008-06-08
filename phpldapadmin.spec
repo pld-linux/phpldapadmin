@@ -15,6 +15,8 @@ Requires:	php(ldap)
 Requires:	php(pcre)
 Requires:	php(xml)
 Requires:	webapps
+Requires:	webserver(access)
+Requires:	webserver(alias)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
