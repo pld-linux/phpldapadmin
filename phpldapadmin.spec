@@ -1,12 +1,12 @@
 Summary:	phpldapadmin - a web-based LDAP client
 Summary(pl.UTF-8):	phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
-Version:	1.1.0.6
+Version:	1.2.1.1
 Release:	1
-License:	GPL
-Group:		Applications/Networking
-Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
-# Source0-md5:	f763977c46d09c5801d9af4ebde07a4f
+License:	GPL v2
+Group:		Applications/Databases/Interfaces
+Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tgz
+# Source0-md5:	9455d33186236059ea6c230841cb48b2
 Patch0:		%{name}-paths.patch
 URL:		http://phpldapadmin.sourceforge.net/
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -17,8 +17,8 @@ Requires:	php(xml)
 Requires:	webapps
 Requires:	webserver(access)
 Requires:	webserver(alias)
-Requires:	webserver(indexfile)
 Requires:	webserver(php)
+Suggests:	webserver(indexfile)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -54,8 +54,11 @@ nowicjuszy.
 
 cat > apache.conf <<'EOF'
 Alias /ldapadmin %{_appdir}/htdocs
+
 <Directory %{_appdir}/htdocs>
-	allow from all
+	AllowOverride None
+	Allow from all
+	php_admin_value open_basedir "%{_sysconfdir}:%{_appdir}"
 </Directory>
 EOF
 
@@ -63,8 +66,7 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}}
 
-cp -a htdocs $RPM_BUILD_ROOT%{_appdir}
-cp -a lib locale templates $RPM_BUILD_ROOT%{_appdir}
+cp -a htdocs hooks lib locale queries templates $RPM_BUILD_ROOT%{_appdir}
 cp -a VERSION $RPM_BUILD_ROOT%{_appdir}
 cp -a config/config.php.example	$RPM_BUILD_ROOT%{_sysconfdir}/config.php
 cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
