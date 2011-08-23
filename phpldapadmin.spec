@@ -58,7 +58,7 @@ Alias /ldapadmin %{_appdir}/htdocs
 <Directory %{_appdir}/htdocs>
 	AllowOverride None
 	Allow from all
-	php_admin_value open_basedir "%{_sysconfdir}:%{_appdir}"
+	php_admin_value open_basedir "%{_sysconfdir}/:%{_appdir}/"
 </Directory>
 EOF
 
