@@ -2,7 +2,7 @@ Summary:	phpldapadmin - a web-based LDAP client
 Summary(pl.UTF-8):	phpldapadmin - klient WWW dla LDAP
 Name:		phpldapadmin
 Version:	1.2.1.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/Databases/Interfaces
 Source0:	http://dl.sourceforge.net/phpldapadmin/%{name}-%{version}.tgz
@@ -19,6 +19,7 @@ Requires:	webserver(access)
 Requires:	webserver(alias)
 Requires:	webserver(php)
 Suggests:	webserver(indexfile)
+Conflicts:	apache-base < 2.4.0-1
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -62,6 +63,16 @@ Alias /ldapadmin %{_appdir}/htdocs
 </Directory>
 EOF
 
+cat > httpd.conf <<'EOF'
+Alias /ldapadmin %{_appdir}/htdocs
+
+<Directory %{_appdir}/htdocs>
+	AllowOverride None
+	Require all granted
+	php_admin_value open_basedir "%{_sysconfdir}/:%{_appdir}/"
+</Directory>
+EOF
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}}
@@ -70,7 +81,7 @@ cp -a htdocs hooks lib locale queries templates $RPM_BUILD_ROOT%{_appdir}
 cp -a VERSION $RPM_BUILD_ROOT%{_appdir}
 cp -a config/config.php.example	$RPM_BUILD_ROOT%{_sysconfdir}/config.php
 cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
-cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
+cp -a httpd.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -81,10 +92,10 @@ rm -rf $RPM_BUILD_ROOT
 %triggerun -- apache1 < 1.3.37-3, apache1-base
 %webapp_unregister apache %{_webapp}
 
-%triggerin -- apache < 2.2.0, apache-base
+%triggerin -- apache-base
 %webapp_register httpd %{_webapp}
 
-%triggerun -- apache < 2.2.0, apache-base
+%triggerun -- apache-base
 %webapp_unregister httpd %{_webapp}
 
 %files
