@@ -51,7 +51,7 @@ nowicjuszy.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 cat > apache.conf <<'EOF'
 Alias /ldapadmin %{_appdir}/htdocs
